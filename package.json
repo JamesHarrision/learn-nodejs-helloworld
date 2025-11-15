@@ -8,10 +8,14 @@
     "dev": "nodemon"
   },
   "nodemonConfig": {
-    "watch": ["src"], 
-    "ext": "ts", 
-    "ignore": ["node_modules"], 
-    "exec": "ts-node ./src/app.ts" 
+    "watch": [
+      "src"
+    ],
+    "ext": "ts",
+    "ignore": [
+      "node_modules"
+    ],
+    "exec": "ts-node ./src/app.ts"
   },
   "repository": {
     "type": "git",
@@ -27,6 +31,7 @@
   },
   "homepage": "https://github.com/JamesHarrision/learn-nodejs-helloworld#readme",
   "dependencies": {
+    "dotenv": "16.4.7",
     "express": "5.0.1"
   },
   "devDependencies": {
