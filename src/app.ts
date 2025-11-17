@@ -17,5 +17,5 @@ app.use(express.static('public'));
 
 app.listen(8080, () => {
   console.log(`My app is running on port: ${PORT}`);
-  console.log(`${__dirname + '/views'}`);
+  // console.log(`${__dirname + '/views'}`);
 });
