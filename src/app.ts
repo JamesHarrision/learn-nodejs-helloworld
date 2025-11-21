@@ -5,15 +5,19 @@ import webRoutes from "./routes/web";
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-//Config template engine
+//Config view engine
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
-//Config routes
-webRoutes(app);
+//config request.body
+app.use(express.json()); 
+app.use(express.urlencoded({ extended: true }));
 
 //Config static files: (css - images - javascripts)
 app.use(express.static('public'));
+
+//Config routes
+webRoutes(app);
 
 app.listen(8080, () => {
   console.log(`My app is running on port: ${PORT}`);
