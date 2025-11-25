@@ -58,5 +58,20 @@ const getUserById = async (id: String) => {
   }
 }
 
+const updateUserById = async (id: String,
+   fullName: String, email: String, address: String, 
+) => {
+  const connection = await getConnection();
+  try {
+    const sql = 'UPDATE `users` SET `name` = ?, `email` = ?, `address` = ? WHERE `id` = ? LIMIT 1';
+    const values = [fullName, email, address, id];
 
-export { handleCreateUser, getAllUsers, handleDeleteUser, getUserById}
+    const [result, fields] = await connection.execute(sql, values);
+    return result;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+
+export { handleCreateUser, getAllUsers, handleDeleteUser, getUserById, updateUserById}
