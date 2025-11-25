@@ -24,26 +24,39 @@
     <hr>
     <table class="table table-hover table-bordered">
       <thead>
-          <th>Id</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Address</th>
-          <th>Actions</th>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Address</th>
+        <th>Actions</th>
       </thead>
       <tbody>
-          <% users.forEach(function(user) { %>
-            <tr>
-              <td> <%= user.id %> </td>
-              <td> <%= user.name %> </td>
-              <td> <%= user.email %> </td>
-              <td> <%= user.address %> </td>
-              <td>
+        <% users.forEach(function(user) { %>
+          <tr>
+            <td>
+              <%= user.id %>
+            </td>
+            <td>
+              <%= user.name %>
+            </td>
+            <td>
+              <%= user.email %>
+            </td>
+            <td>
+              <%= user.address %>
+            </td>
+            <td>
+              <div style="display: flex; align-items: center; gap: 15px;">
+                <form style="margin: 0;" action="handle-view-user/<%= user.id %>" method="get">
+                  <button type="submit" class="btn btn-warning">View</button>
+                </form>
                 <form style="margin: 0;" action="handle-delete-user/<%= user.id %>" method="post">
                   <button type="submit" class="btn btn-danger">Delete</button>
                 </form>
-              </td>
-            </tr>
-          <% }); %> 
+              </div>
+            </td>
+          </tr>
+          <% }); %>
       </tbody>
     </table>
   </div>
