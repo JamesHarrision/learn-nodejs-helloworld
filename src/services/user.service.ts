@@ -1,3 +1,5 @@
+import getConection from "../config/database";
+
 const handleCreateUser = (
   fullName: String, 
   email: String, 
@@ -8,4 +10,18 @@ const handleCreateUser = (
       console.log("Insert a new user");
 }
 
-export { handleCreateUser }
+const getAllUsers = async () => {
+  const connection = await getConection();
+  
+  try {
+    const [results, fields] = await connection.query(
+      'SELECT * FROM users'
+    );
+    return results;
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
+}
+
+export { handleCreateUser, getAllUsers }

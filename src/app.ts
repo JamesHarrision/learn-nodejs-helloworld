@@ -20,8 +20,8 @@ app.use(express.static('public'));
 //Config routes
 webRoutes(app);
 
-//Config database
-getConection();
+// //Config database
+// getConection();
 
 app.listen(8080, () => {
   console.log(`My app is running on port: ${PORT}`);
