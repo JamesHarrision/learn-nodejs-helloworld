@@ -15,7 +15,7 @@
 <body>
   <div style="margin: 50px;">
     <div style="display: flex; justify-content: space-between; align-items: center;">
-      <h1>List users: <%= name %></h1>
+      <h1>List users: </h1>
       <!-- <img src="./images/hoidanit.png" alt="hoidanit"> -->
       <div>
         <a href="./create-user" class="btn btn-warning">Create a new user</a>
@@ -31,15 +31,17 @@
           <th>Actions</th>
       </thead>
       <tbody>
-        <tr>
-          <td>Alfreds Futterkiste</td>
-          <td>Maria Anders</td>
-          <td>mamam@gmail.com</td>
-          <td>Germany</td>
-          <td>
-            <button class="btn btn-danger">Delete</button>
-          </td>
-        </tr>
+          <% users.forEach(function(user) { %>
+            <tr>
+              <td> <%= user.id %> </td>
+              <td> <%= user.name %> </td>
+              <td> <%= user.email %> </td>
+              <td> <%= user.address %> </td>
+              <td>
+                <button class="btn btn-danger">Delete</button>
+              </td>
+            </tr>
+          <% }); %> 
       </tbody>
     </table>
   </div>
