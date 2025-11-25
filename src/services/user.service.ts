@@ -1,18 +1,25 @@
-import getConection from "../config/database";
+import getConnection from "../config/database";
 
-const handleCreateUser = (
+const handleCreateUser = async (
   fullName: String, 
   email: String, 
   address: String) => {
-      //Insert into database
-
-      //Return result
-      console.log("Insert a new user");
+    //Insert into database
+  const connection = await getConnection();
+  try {
+    // execute will internally call prepare and query
+    const sql = 'INSERT INTO `users`(`name`, `email`, `address`) VALUES (?, ?, ?)';
+    const values = [fullName, email, address];
+    const [result, fields] = await connection.execute(sql, values);
+    return result;
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
 }
 
 const getAllUsers = async () => {
-  const connection = await getConection();
-  
+  const connection = await getConnection();
   try {
     const [results, fields] = await connection.query(
       'SELECT * FROM users'
