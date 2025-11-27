@@ -42,7 +42,6 @@ const postUpdateUser = async (req: Request, res: Response) => {
   const {id, name, email, address} = req.body;
   //get user by id
   const user = await updateUserById(id, name, email, address);
-  console.log(user);
   return res.redirect('/');
 }
 
