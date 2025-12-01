@@ -38,14 +38,38 @@
                       <form action="/admin/handle-create-user" method="post">
 
                         <div class="mb-3">
-                          <label for="nameInput" class="form-label">Name:</label>
-                          <input type="text" class="form-control" name="name" id="nameInput" placeholder="Your name">
+                          <label for="nameInput" class="form-label">Full name:</label>
+                          <input type="text" class="form-control" name="fullName" id="nameInput"
+                            placeholder="Your name">
+                        </div>
+
+                        <div class="row">
+                          <div class="col-md-6">
+                            <label class="form-label">Phone: </label>
+                            <input type="text" class="form-control" name="phone">
+                          </div>
+                          <div class="col-md-6">
+                            <label class="form-label">Role</label>
+                            <select id="volume" class="form-select">
+                              <% roles.forEach((roles,index)=> { %>
+                                <option value="<%-roles.id %>">
+                                  <%- roles.name %>
+                                </option>
+                                <%})%>
+                            </select>
+
+                          </div>
                         </div>
 
                         <div class="mb-3">
-                          <label for="emailInput" class="form-label">Email address:</label>
-                          <input type="email" class="form-control" name="email" id="emailInput"
+                          <label for="emailInput" class="form-label">Email:</label>
+                          <input type="email" class="form-control" name="username" id="emailInput"
                             placeholder="name@example.com">
+                        </div>
+
+                        <div class="mb-3">
+                          <label for="formFile" class="form-label">Avatar: </label>
+                          <input class="form-control" type="file" id="formFile">
                         </div>
 
                         <div class="mb-3">
