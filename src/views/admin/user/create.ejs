@@ -46,7 +46,7 @@
                 <div class="card-body">
                   <div class="row justify-content-center">
                     <div class="col-lg-8 col-md-10">
-                      <form action="/admin/handle-create-user" method="post">
+                      <form action="/admin/handle-create-user" method="post" enctype="multipart/form-data">
 
                         <div class="mb-3">
                           <label for="nameInput" class="form-label">Full name:</label>
@@ -80,7 +80,8 @@
 
                         <div class="mb-3">
                           <label for="avatarFile" class="form-label">Avatar: </label>
-                          <input class="form-control" type="file" id="avatarFile" accept=".png, .jpg, .jpeg">
+                          <input class="form-control" type="file" id="avatarFile" accept=".png, .jpg, .jpeg" 
+                            name="avatar">
                         </div>
                         <img style="max-height: 250px; display: none;" alt="avatar preview" id="avatarPreview" />
 
