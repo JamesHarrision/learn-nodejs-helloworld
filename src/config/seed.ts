@@ -6,25 +6,7 @@ const initDatabase = async () => {
   const countUser = await prisma.user.count();
   const countRow = await prisma.role.count();
 
-  if (countUser === 0) {
-    const defaultPassword = await hashPassword("123456");
-    await prisma.user.createMany({
-      data: [
-        {
-          fullName: "Admin",
-          username: 'abc@gmail.com',
-          password: defaultPassword,
-          accountType: ACCOUNT_TYPE.SYSTEM
-        },
-        {
-          fullName: "Jack1e",
-          username: 'dev@gmail.com',
-          password: defaultPassword,
-          accountType: ACCOUNT_TYPE.SYSTEM
-        }
-      ]
-    });
-  }else if(countRow === 0){
+  if (countRow === 0) {
     await prisma.role.createMany({
       data: [
         {
@@ -37,7 +19,37 @@ const initDatabase = async () => {
         }
       ]
     });
-  }else{
+  } 
+
+  if (countUser === 0) {
+    const defaultPassword = await hashPassword("123456");
+    const adminRole = await prisma.role.findFirst({
+      where: {
+        name: "ADMIN"
+      }
+    });
+    if (adminRole) {
+      await prisma.user.createMany({
+        data: [
+          {
+            fullName: "ADMIN",
+            username: 'abc@gmail.com',
+            password: defaultPassword,
+            accountType: ACCOUNT_TYPE.SYSTEM,
+            roleId: adminRole.id
+          },
+          {
+            fullName: "JACK1E",
+            username: 'dev@gmail.com',
+            password: defaultPassword,
+            accountType: ACCOUNT_TYPE.SYSTEM,
+            roleId: adminRole.id
+          }
+        ]
+      });
+    }
+  } 
+  if(countRow !== 0 && countUser !== 0){
     console.log('Already init data');
   }
 }

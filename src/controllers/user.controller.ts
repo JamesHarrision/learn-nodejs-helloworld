@@ -23,7 +23,7 @@ const postCreateUser = async (req: Request, res: Response) => {
   const avatar = file?.filename ?? "hoidanit";
  
   //handle create user
-  const a = await handleCreateUser(fullName, username, address, phone, avatar);
+  const a = await handleCreateUser(fullName, username, address, phone, avatar, role);
 
   return res.redirect("/admin/user");
 }
