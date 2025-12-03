@@ -46,7 +46,9 @@
                 <div class="card-body">
                   <div class="row justify-content-center">
                     <div class="col-lg-8 col-md-10">
-                      <form action="/admin/handle-create-user" method="post" enctype="multipart/form-data">
+                      <form action="/admin/update-user" method="post" enctype="multipart/form-data">
+
+                        <input type="text"  name="id" value="<%=user.id%>" style="display: none;">
 
                         <div class="mb-3">
                           <label for="nameInput" class="form-label">Full name:</label>
@@ -57,7 +59,7 @@
                         <div class="mb-3">
                           <label for="emailInput" class="form-label">Email:</label>
                           <input type="email" class="form-control" name="username" id="emailInput"
-                            value="<%= user.username %>" placeholder="name@example.com">
+                            value="<%= user.username %>" placeholder="name@example.com" disabled>
                         </div>
 
                         <div class="row">
@@ -82,19 +84,25 @@
                             <input class="form-control" type="file" id="avatarFile" accept=".png, .jpg, .jpeg"
                               name="avatar">
                           </div>
-                          <img style="max-height: 250px; display: none;" alt="avatar preview" id="avatarPreview" />
+                          <% if (user.avatar) { %>
+                            <img style="max-height: max-content; width: max-content; display: block;"
+                            alt="avatar preview" id="avatarPreview" src="/images/<%=user.avatar%>" />
+                          <% } else { %>
+                            <img style="max-height: max-content; width: max-content; display: none;"
+                            alt="avatar preview" id="avatarPreview"/>
+                          <% } %>
+                                
 
-                          <div class="mb-3">
-                            <label for="addressInput" class="form-label">Address:</label>
-                            <textarea class="form-control" name="address" id="addressInput" rows="3">
-                            <%= user.address %>
-                        </textarea>
-                          </div>
+                                <div class="mb-3">
+                                  <label for="addressInput" class="form-label">Address:</label>
+                                  <textarea class="form-control" name="address" id="addressInput"
+                                    rows="3"><%= user.address %></textarea>
+                                </div>
 
-                          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <a href="/admin/user" class="btn btn-secondary me-md-2">Cancel</a>
-                            <button type="submit" class="btn btn-warning">Submit</button>
-                          </div>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                  <a href="/admin/user" class="btn btn-secondary me-md-2">Cancel</a>
+                                  <button type="submit" class="btn btn-warning">Submit</button>
+                                </div>
 
                       </form>
                     </div>
