@@ -41,7 +41,7 @@
               <div class="card mb-4">
                 <div class="card-header">
                   <i class="fas fa-user-plus me-1"></i>
-                  Create a new user
+                  Detail user
                 </div>
                 <div class="card-body">
                   <div class="row justify-content-center">
@@ -51,49 +51,50 @@
                         <div class="mb-3">
                           <label for="nameInput" class="form-label">Full name:</label>
                           <input type="text" class="form-control" name="fullName" id="nameInput"
-                            placeholder="Your name">
-                        </div>
-
-                        <div class="row">
-                          <div class="col-md-6">
-                            <label class="form-label">Phone: </label>
-                            <input type="text" class="form-control" name="phone">
-                          </div>
-                          <div class="col-md-6">
-                            <label class="form-label">Role</label>
-                            <select id="volume" class="form-select" name="role">
-                              <% roles.forEach((roles,index)=> { %>
-                                <option value="<%-roles.id %>">
-                                  <%- roles.name %>
-                                </option>
-                                <%})%>
-                            </select>
-
-                          </div>
+                            value="<%= user.fullName %>" placeholder="Your name">
                         </div>
 
                         <div class="mb-3">
                           <label for="emailInput" class="form-label">Email:</label>
                           <input type="email" class="form-control" name="username" id="emailInput"
-                            placeholder="name@example.com">
+                            value="<%= user.username %>" placeholder="name@example.com">
                         </div>
 
-                        <div class="mb-3">
-                          <label for="avatarFile" class="form-label">Avatar: </label>
-                          <input class="form-control" type="file" id="avatarFile" accept=".png, .jpg, .jpeg"
-                            name="avatar">
-                        </div>
-                        <img style="max-height: 250px; display: none;" alt="avatar preview" id="avatarPreview" />
+                        <div class="row">
+                          <div class="col-md-6">
+                            <label class="form-label">Phone: </label>
+                            <input type="text" class="form-control" name="phone" value="<%= user.phone %>">
+                          </div>
+                          <!-- Role -->
+                          <div class="col-md-6">
+                            <label class="form-label">Role</label>
+                            <select id="volume" class="form-select" name="role">
+                              <% roles.forEach((role, index)=> { %>
+                                <option value="<%= role.id %>" <%=role.id===user.roleId ? 'selected' : '' %>>
+                                  <%= role.name %>
+                                </option>
+                                <% }) %>
+                            </select>
+                          </div>
 
-                        <div class="mb-3">
-                          <label for="addressInput" class="form-label">Address:</label>
-                          <textarea class="form-control" name="address" id="addressInput" rows="3"></textarea>
-                        </div>
+                          <div class="mb-3">
+                            <label for="avatarFile" class="form-label">Avatar: </label>
+                            <input class="form-control" type="file" id="avatarFile" accept=".png, .jpg, .jpeg"
+                              name="avatar">
+                          </div>
+                          <img style="max-height: 250px; display: none;" alt="avatar preview" id="avatarPreview" />
 
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                          <a href="/admin/user" class="btn btn-secondary me-md-2">Cancel</a>
-                          <button type="submit" class="btn btn-warning">Submit</button>
-                        </div>
+                          <div class="mb-3">
+                            <label for="addressInput" class="form-label">Address:</label>
+                            <textarea class="form-control" name="address" id="addressInput" rows="3">
+                            <%= user.address %>
+                        </textarea>
+                          </div>
+
+                          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="/admin/user" class="btn btn-secondary me-md-2">Cancel</a>
+                            <button type="submit" class="btn btn-warning">Submit</button>
+                          </div>
 
                       </form>
                     </div>
