@@ -6,7 +6,7 @@ const getAdminCreateProductPage = (req: Request, res: Response) => {
 
 const postAdminCreateProductPage = (req: Request, res: Response) => {
 
-  return res.redirect('admin/product');
+  return res.redirect('/admin/product');
 }
 
 export {getAdminCreateProductPage, postAdminCreateProductPage}
