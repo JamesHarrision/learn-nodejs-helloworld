@@ -1,23 +1,40 @@
+import { name } from "ejs";
 import { Response, Request } from "express";
 import { ProductSchema, TProductSchema } from "src/validation/product.schema";
 
+
 const getAdminCreateProductPage = (req: Request, res: Response) => {
-  return res.render('admin/product/create.ejs');
+  const errors = [];
+  const oldData = {
+    name: "",
+    price: "",
+    detailDesc: "",
+    shortDesc: "",
+    quantity: "",
+    factory: "",
+    target: ""
+  }
+  return res.render('admin/product/create.ejs', { errors, oldData });
 }
 
 const postAdminCreateProductPage = (req: Request, res: Response) => {
-  const {} = req.body as TProductSchema;
+  const { name, price, detailDesc, shortDesc, quantity, factory, target } = req.body as TProductSchema;
 
-  try{
-    const result = ProductSchema.parse(req.body);
-    console.log("Run oke !");
+  const validate = ProductSchema.safeParse(req.body);
 
-  } catch( error){
-    console.log("Run error !", error);
-    
+  if (!validate.success) {
+    //Error
+    const errorsZod = validate.error.issues;
+    const oldData = { name, price, detailDesc, shortDesc, quantity, factory, target }
+    const errors = errorsZod?.map(item => `${item.message} [${item.path[0]}]`);
+    console.log(errors);
+    return res.render('admin/product/create.ejs', {
+      errors,
+      oldData
+    });
   }
 
   return res.redirect('/admin/product');
 }
 
-export {getAdminCreateProductPage, postAdminCreateProductPage}
+export { getAdminCreateProductPage, postAdminCreateProductPage }

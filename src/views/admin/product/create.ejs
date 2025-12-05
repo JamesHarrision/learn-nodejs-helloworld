@@ -48,70 +48,80 @@
                     <div class="col-lg-8 col-md-10">
                       <form action="/admin/create-product" method="post" enctype="multipart/form-data">
 
-                        <div class="row">
-                          <div class="mb-3 col-6">
-                            <label for="nameInput" class="form-label">Tên sản phẩm:</label>
-                            <input type="text" class="form-control" name="name" id="nameInput">
+                        <% errors.forEach(function(error) { %>
+                          <div class="alert alert-danger mb-3">
+                            <%= error %>
                           </div>
+                          <% }); %>
 
-                          <div class="mb-3 col-6">
-                            <label for="priceInput" class="form-label">Giá sản phẩm:</label>
-                            <input type="text" class="form-control" name="price" id="priceInput">
-                          </div>
-                        </div>
+                            <div class="row">
+                              <div class="mb-3 col-6">
+                                <label for="nameInput" class="form-label">Tên sản phẩm:</label>
+                                <input value="<%= oldData.name %>" type="text" class="form-control" name="name"
+                                  id="nameInput">
+                              </div>
 
-                        <div class="mb-3">
-                          <label for="detailDesc" class="form-label">Mô tả chi tiết</label>
-                          <input type="text" class="form-control" name="detailDesc" id="detailDesc">
-                        </div>
+                              <div class="mb-3 col-6">
+                                <label for="priceInput" class="form-label">Giá sản phẩm:</label>
+                                <input value="<%= oldData.price %>" type="text" class="form-control" name="price"
+                                  id="priceInput">
+                              </div>
+                            </div>
 
-                        <div class="mb-3">
-                          <label for="shortDesc" class="form-label">Mô tả ngắn gọn:</label>
-                          <input type="text" class="form-control" name="shortDesc" id="shortDesc"
-                            placeholder="name@example.com">
-                        </div>
+                            <div class="mb-3">
+                              <label for="detailDesc" class="form-label">Mô tả chi tiết</label>
+                              <textarea type="text" class="form-control" name="detailDesc"
+                                id="detailDesc"><%= oldData.detailDesc %></textarea>
+                            </div>
 
-                        <div class="mb-3">
-                          <label for="quantity" class="form-label">Số lượng:</label>
-                          <input type="number" class="form-control" name="quantity" id="quantity">
-                        </div>
+                            <div class="mb-3">
+                              <label for="shortDesc" class="form-label">Mô tả ngắn gọn:</label>
+                              <input value="<%= oldData.shortDesc %>" type="text" class="form-control" name="shortDesc"
+                                id="shortDesc">
+                            </div>
 
-                        <div class="row">
-                          <div class="mb-3 col-6">
-                            <label class="form-label">NSX</label>
-                            <select name="factory" class="form-select">
-                              <option value="APPLE">Apple (MacBook)</option>
-                              <option value="ASUS">Asus</option>
-                              <option value="LENOVO">Lenovo</option>
-                              <option value="DELL">Dell</option>
-                              <option value="LG">LG</option>
-                              <option value="ACER">Acer</option>
-                            </select>
-                          </div>
-                          <div class="mb-3 col-6">
-                            <label class="form-label">TAG</label>
-                            <select name="target" class="form-select">
-                              <option value="GAMING">Gaming</option>
-                              <option value="SINHVIEN-VANPHONG">Sinh viên - Văn phòng
-                              </option>
-                              <option value="THIET-KE-DO-HOA">Thiết kế đồ họa</option>
-                              <option value="MONG-NHE">Mỏng nhẹ</option>
-                              <option value="DOANH-NHAN">Doanh nhân</option>
-                            </select>
-                          </div>
-                        </div>
+                            <div class="mb-3">
+                              <label for="quantity" class="form-label">Số lượng:</label>
+                              <input value="<%= oldData.quantity %>" type="number" class="form-control" name="quantity"
+                                id="quantity">
+                            </div>
 
-                        <div class="mb-3">
-                          <label for="avatarFile" class="form-label">Image: </label>
-                          <input class="form-control" type="file" id="avatarFile" accept=".png, .jpg, .jpeg"
-                            name="image">
-                        </div>
-                        <img style="max-height: 250px; display: none;" alt="avatar preview" id="avatarPreview" />
+                            <div class="row">
+                              <div class="mb-3 col-6">
+                                <label class="form-label">NSX</label>
+                                <select name="factory" class="form-select">
+                                  <option value="APPLE">Apple (MacBook)</option>
+                                  <option value="ASUS">Asus</option>
+                                  <option value="LENOVO">Lenovo</option>
+                                  <option value="DELL">Dell</option>
+                                  <option value="LG">LG</option>
+                                  <option value="ACER">Acer</option>
+                                </select>
+                              </div>
+                              <div class="mb-3 col-6">
+                                <label class="form-label">TAG</label>
+                                <select name="target" class="form-select">
+                                  <option value="GAMING">Gaming</option>
+                                  <option value="SINHVIEN-VANPHONG">Sinh viên - Văn phòng
+                                  </option>
+                                  <option value="THIET-KE-DO-HOA">Thiết kế đồ họa</option>
+                                  <option value="MONG-NHE">Mỏng nhẹ</option>
+                                  <option value="DOANH-NHAN">Doanh nhân</option>
+                                </select>
+                              </div>
+                            </div>
 
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                          <a href="/admin/product" class="btn btn-secondary me-md-2">Cancel</a>
-                          <button type="submit" class="btn btn-warning">Submit</button>
-                        </div>
+                            <div class="mb-3">
+                              <label for="avatarFile" class="form-label">Image: </label>
+                              <input class="form-control" type="file" id="avatarFile" accept=".png, .jpg, .jpeg"
+                                name="image">
+                            </div>
+                            <img style="max-height: 250px; display: none;" alt="avatar preview" id="avatarPreview" />
+
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                              <a href="/admin/product" class="btn btn-secondary me-md-2">Cancel</a>
+                              <button type="submit" class="btn btn-warning">Submit</button>
+                            </div>
 
                       </form>
                     </div>
