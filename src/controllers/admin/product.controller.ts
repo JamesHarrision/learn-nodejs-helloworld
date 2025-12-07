@@ -1,5 +1,6 @@
 import { name } from "ejs";
 import { Response, Request } from "express";
+import { handleCreateProduct } from "services/admin/product.service";
 import { ProductSchema, TProductSchema } from "src/validation/product.schema";
 
 
@@ -17,7 +18,7 @@ const getAdminCreateProductPage = (req: Request, res: Response) => {
   return res.render('admin/product/create.ejs', { errors, oldData });
 }
 
-const postAdminCreateProductPage = (req: Request, res: Response) => {
+const postAdminCreateProduct = async (req: Request, res: Response) => {
   const { name, price, detailDesc, shortDesc, quantity, factory, target } = req.body as TProductSchema;
 
   const validate = ProductSchema.safeParse(req.body);
@@ -34,7 +35,9 @@ const postAdminCreateProductPage = (req: Request, res: Response) => {
     });
   }
 
+  const image = req?.file?.fieldname ?? null;
+  await handleCreateProduct(name, +price, detailDesc, shortDesc, +quantity, factory, target, image);
   return res.redirect('/admin/product');
 }
 
-export { getAdminCreateProductPage, postAdminCreateProductPage }
+export { getAdminCreateProductPage, postAdminCreateProduct }
