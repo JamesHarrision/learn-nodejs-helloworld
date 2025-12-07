@@ -68,8 +68,7 @@ const getAdminViewProduct = async (req: Request, res: Response) => {
 }
 
 const postUpdateAdminProduct = async (req: Request, res: Response) => {
-  const { name, price, detailDesc, shortDesc, quantity, factory, target} = req.body as TProductSchema;
-  const id = req.body.id;
+  const {id, name, price, detailDesc, shortDesc, quantity, factory, target} = req.body as TProductSchema;
 
   const validate = ProductSchema.safeParse(req.body);
 
