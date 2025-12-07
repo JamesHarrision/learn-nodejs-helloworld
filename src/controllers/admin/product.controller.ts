@@ -1,6 +1,6 @@
 import { name } from "ejs";
 import { Response, Request } from "express";
-import { getProductById, handleCreateProduct, updateProductById } from "services/admin/product.service";
+import { deleteProductById, getProductById, handleCreateProduct, updateProductById } from "services/admin/product.service";
 import { ProductSchema, TProductSchema } from "src/validation/product.schema";
 
 const factoryOptions = [ 
@@ -91,4 +91,10 @@ const postUpdateAdminProduct = async (req: Request, res: Response) => {
 
 }
 
-export { getAdminCreateProductPage, postAdminCreateProduct, getAdminViewProduct, postUpdateAdminProduct }
+const postDeletProduct = async (req: Request, res: Response) => {
+  const {id} = req.params;
+  deleteProductById(id);
+  return res.redirect('/admin/product');
+}
+
+export { getAdminCreateProductPage, postAdminCreateProduct, getAdminViewProduct, postUpdateAdminProduct, postDeletProduct }
