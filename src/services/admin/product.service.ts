@@ -29,7 +29,7 @@ const getProductList = async () => {
   return await prisma.product.findMany();
 }
 
-const getProductById = async (id) => {
+const getAdminProductById = async (id) => {
   return await prisma.product.findFirst({
     where: {
       id: +id
@@ -73,4 +73,4 @@ const deleteProductById = async (id: string) => {
   });
 }
 
-export { handleCreateProduct, getProductList, getProductById, updateProductById, deleteProductById }
+export { handleCreateProduct, getProductList, getAdminProductById, updateProductById, deleteProductById }

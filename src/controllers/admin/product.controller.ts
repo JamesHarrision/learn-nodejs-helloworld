@@ -1,6 +1,6 @@
 import { name } from "ejs";
 import { Response, Request } from "express";
-import { deleteProductById, getProductById, handleCreateProduct, updateProductById } from "services/admin/product.service";
+import { deleteProductById, getAdminProductById, handleCreateProduct, updateProductById } from "services/admin/product.service";
 import { ProductSchema, TProductSchema } from "src/validation/product.schema";
 
 const factoryOptions = [ 
@@ -58,7 +58,7 @@ const postAdminCreateProduct = async (req: Request, res: Response) => {
 
 const getAdminViewProduct = async (req: Request, res: Response) => {
   const {id} = req.params;
-  const product = await getProductById(id);
+  const product = await getAdminProductById(id);
   console.log(product);
   return res.render('admin/product/detail.ejs', {
     product: product,
