@@ -1,6 +1,6 @@
 import { name } from "ejs";
 import { Response, Request } from "express";
-import { getProductById, handleCreateProduct } from "services/admin/product.service";
+import { getProductById, handleCreateProduct, updateProductById } from "services/admin/product.service";
 import { ProductSchema, TProductSchema } from "src/validation/product.schema";
 
 const factoryOptions = [ 
@@ -67,4 +67,28 @@ const getAdminViewProduct = async (req: Request, res: Response) => {
   });
 }
 
-export { getAdminCreateProductPage, postAdminCreateProduct, getAdminViewProduct }
+const postUpdateAdminProduct = async (req: Request, res: Response) => {
+  const { name, price, detailDesc, shortDesc, quantity, factory, target} = req.body as TProductSchema;
+  const id = req.body.id;
+
+  const validate = ProductSchema.safeParse(req.body);
+
+  if (!validate.success) {
+    //Error
+    const errorsZod = validate.error.issues;
+    const oldData = { name, price, detailDesc, shortDesc, quantity, factory, target }
+    const errors = errorsZod?.map(item => `${item.message} [${item.path[0]}]`);
+    console.log(errors);
+    return res.render('admin/product/detail.ejs', {
+      errors,
+      oldData
+    });
+  }
+
+  const image = req?.file?.filename ?? null;
+  await updateProductById(id, name, price, detailDesc, shortDesc, quantity, factory, target, image);
+  return res.redirect('/admin/product');
+
+}
+
+export { getAdminCreateProductPage, postAdminCreateProduct, getAdminViewProduct, postUpdateAdminProduct }

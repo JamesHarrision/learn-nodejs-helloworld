@@ -37,4 +37,32 @@ const getProductById = async (id) => {
   })
 }
 
-export { handleCreateProduct, getProductList, getProductById }
+const updateProductById = async (
+  id: string,
+  name: string,
+  price: number,
+  detailDesc: string,
+  shortDesc: string,
+  quantity: number,
+  factory: string,
+  target: string,
+  image: string,
+) => {
+  const updatedUser = await prisma.product.update({
+    where: {
+      id: +id
+    },
+    data: {
+        name: name,
+        price: +price,
+        detailDesc: detailDesc,
+        shortDesc: shortDesc,
+        quantity: +quantity,
+        factory: factory,
+        target: target,
+        ...(image !== undefined && {image: image})
+    }
+  });
+}
+
+export { handleCreateProduct, getProductList, getProductById, updateProductById }
