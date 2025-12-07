@@ -29,4 +29,12 @@ const getProductList = async () => {
   return await prisma.product.findMany();
 }
 
-export { handleCreateProduct, getProductList }
+const getProductById = async (id) => {
+  return await prisma.product.findFirst({
+    where: {
+      id: +id
+    }
+  })
+}
+
+export { handleCreateProduct, getProductList, getProductById }
