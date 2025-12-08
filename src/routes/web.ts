@@ -6,7 +6,7 @@ import multer from 'multer';
 import fileUploadMiddleware from 'src/middleware/multer';
 import { getProductPage } from 'controllers/client/product.controller';
 import { getAdminCreateProductPage, getAdminViewProduct, postAdminCreateProduct, postDeletProduct, postUpdateAdminProduct } from 'controllers/admin/product.controller';
-import { getLoginPage, getRegisterPage } from 'controllers/client/auth';
+import { getLoginPage, getRegisterPage, postRegisterUser } from 'controllers/client/auth.controller';
 
 const upload = multer({ dest: 'uploads/' })
 
@@ -36,6 +36,7 @@ const webRoutes = (app: Express) => {
   //Auth
   router.get("/login", getLoginPage);
   router.get("/register", getRegisterPage);
+  router.post("/register", postRegisterUser);
 
   router.get("/admin/order", getAdminOrderPage);
 
