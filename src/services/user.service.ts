@@ -3,6 +3,7 @@ import { ACCOUNT_TYPE } from "config/constant";
 import getConnection from "config/database";
 
 import bcrypt from 'bcrypt' 
+import { hash } from "crypto";
 const saltRounds = 10;
 
 const hashPassword = async (plainText: string) => {
@@ -88,6 +89,9 @@ const updateUserById = async (
   return updatedUser;
 }
 
+const comparePassword = async (plainText: string, hashPassword: string) => {
+  return await bcrypt.compare(plainText, hashPassword);
+}
 
-export { handleCreateUser, getAllUsers, handleDeleteUser, getUserById, updateUserById, getAllRoles, hashPassword
+export { handleCreateUser, getAllUsers, handleDeleteUser, getUserById, updateUserById, getAllRoles, hashPassword, comparePassword
 }
