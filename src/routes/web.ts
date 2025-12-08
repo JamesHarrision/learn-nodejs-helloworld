@@ -1,7 +1,7 @@
 import express, { Express } from 'express'
 import { getHomePage, getCreateUserPage, postCreateUser, postDeleteUser, getViewUser, postUpdateUser } from 'controllers/user.controller';
 import { getAdminOrderPage, getAdminProductPage, getAdminUserPage, getDashboardPage } from 'controllers/admin/dashboard.controller';
-
+import passport from 'passport';
 import multer from 'multer';
 import fileUploadMiddleware from 'src/middleware/multer';
 import { getProductPage } from 'controllers/client/product.controller';
@@ -32,9 +32,13 @@ const webRoutes = (app: Express) => {
   router.get("/admin/view-product/:id", getAdminViewProduct);
   router.post("/admin/update-product", fileUploadMiddleware('image', 'images/product'), postUpdateAdminProduct);
   router.post("/admin/delete-product/:id", postDeletProduct);
-  
+
   //Auth
   router.get("/login", getLoginPage);
+  router.post("/login", passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/login'
+  }))
   router.get("/register", getRegisterPage);
   router.post("/register", postRegisterUser);
 
