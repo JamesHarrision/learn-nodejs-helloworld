@@ -6,6 +6,7 @@ import { getAllUsers, handleCreateUser, handleDeleteUser, getUserById, updateUse
 const getHomePage = async (req: Request, res: Response) => {
   const products = await getProduct();
   const user = req.user;
+  console.log('Current user: ', user);
   return res.render('client/home/show.ejs', {
     products
   });

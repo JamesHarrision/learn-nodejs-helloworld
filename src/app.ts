@@ -6,6 +6,8 @@ import initDatabase from "config/seed";
 import passport from "passport";
 import configPassportLocal from "src/middleware/passport.local";
 import session from "express-session";
+import { PrismaSessionStore } from '@quixo3/prisma-session-store';
+import  { PrismaClient } from '@prisma/client';
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -22,11 +24,24 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 //Config session
-app.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true,
-}))
+app.use(session(
+  {
+    cookie: {
+     maxAge: 7 * 24 * 60 * 60 * 1000 // ms
+    },
+    secret: 'a santa at nasa',
+    resave: true,
+    saveUninitialized: true,
+    store: new PrismaSessionStore(
+      new PrismaClient(),
+      {
+        checkPeriod: 2 * 60 * 1000,  //ms
+        dbRecordIdIsSessionId: true,
+        dbRecordIdFunction: undefined,
+      }
+    )
+  }
+));
 
 //Config passport
 app.use(passport.initialize());
