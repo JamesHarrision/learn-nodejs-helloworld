@@ -7,7 +7,7 @@ import { comparePassword } from "services/user.service";
 const configPassportLocal = () => {
   passport.use(new LocalStrategy({
     // usernameField: 'email' Trong trường hợp tên name không thể đổi thành username được thì cx có thể thay đổi
-  },async function verify(username, password, callback) {
+  }, async function verify(username, password, callback) {
     console.log("Checking username/password", username, password);
     //check user exist in database
     const user = await prisma.user.findUnique({
@@ -27,6 +27,18 @@ const configPassportLocal = () => {
       return callback(null, user);
     }
   }));
+
+  passport.serializeUser(function (user: any, cb) {
+    process.nextTick(function () {
+      cb(null, { id: user.id, username: user.username });
+    });
+  });
+
+  passport.deserializeUser(function (user, cb) {
+    process.nextTick(function () {
+      return cb(null, user);
+    });
+  });
 }
 
 export default configPassportLocal;
