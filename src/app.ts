@@ -30,12 +30,16 @@ app.use(session(
      maxAge: 7 * 24 * 60 * 60 * 1000 // ms
     },
     secret: 'a santa at nasa',
-    resave: true,
-    saveUninitialized: true,
+
+    //Forces session save even if it unchanged
+    resave: false,
+
+    //Save unmodified session
+    saveUninitialized: false,
     store: new PrismaSessionStore(
       new PrismaClient(),
       {
-        checkPeriod: 2 * 60 * 1000,  //ms
+        checkPeriod: 1 * 24 * 60 * 60 * 1000,  //ms
         dbRecordIdIsSessionId: true,
         dbRecordIdFunction: undefined,
       }
