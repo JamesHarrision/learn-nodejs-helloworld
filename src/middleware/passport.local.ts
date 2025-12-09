@@ -7,7 +7,14 @@ import { comparePassword } from "services/user.service";
 const configPassportLocal = () => {
   passport.use(new LocalStrategy({
     // usernameField: 'email' Trong trường hợp tên name không thể đổi thành username được thì cx có thể thay đổi
-  }, async function verify(username, password, callback) {
+    passReqToCallback: true,
+  }, async function verify(req, username, password, callback) {
+
+    const { session } = req as any;
+    if( session?.messages?.length > 0){
+      session.messages = [];
+    }
+
     console.log("Checking username/password", username, password);
     //check user exist in database
     const user = await prisma.user.findUnique({
@@ -17,12 +24,12 @@ const configPassportLocal = () => {
     });
     if (!user) {
       // throw new Error(`Username: ${username} not found`) 
-      return callback(null, false, { message: 'Incorrect username or password.' });
+      return callback(null, false, { message: `Username/password invalid`});
     }
     const isMatch = await comparePassword(password, user.password);
     if (!isMatch) {
       // throw new Error(`Invalid password`);
-      return callback(null, false, { message: 'Invalid password.' });
+      return callback(null, false, { message: 'Username/password invalid'});
     } else {
       return callback(null, user);
     }
