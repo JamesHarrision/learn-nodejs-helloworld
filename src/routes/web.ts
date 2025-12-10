@@ -18,7 +18,7 @@ const webRoutes = (app: Express) => {
   router.get("/product/:id", getProductPage);
 
   //admin routes:
-  router.get("/admin", isAdmin ,getDashboardPage);
+  router.get("/admin", getDashboardPage);
   router.get("/admin/user", getAdminUserPage);
   router.get("/admin/create-user", getCreateUserPage);
   router.post('/admin/handle-create-user', fileUploadMiddleware('avatar'), postCreateUser);
@@ -35,7 +35,7 @@ const webRoutes = (app: Express) => {
   router.post("/admin/delete-product/:id", postDeletProduct);
 
   //Auth
-  router.get("/login", isLogin, getLoginPage);
+  router.get("/login", getLoginPage);
   router.get("/success-redirect", getSucessRedirectPage);
   router.post("/login", passport.authenticate('local', {
     successRedirect: '/success-redirect',
@@ -43,14 +43,13 @@ const webRoutes = (app: Express) => {
     failureMessage: true,
   }));
   router.post("/logout", postLogout)
-
   router.get("/register", getRegisterPage);
   router.post("/register", postRegisterUser);
 
   router.get("/admin/order", getAdminOrderPage);
 
 
-  app.use('/', router);
+  app.use('/', isAdmin, router);
 }
 
 export default webRoutes;

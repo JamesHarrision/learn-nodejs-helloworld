@@ -71,7 +71,8 @@ initDatabase();
 
 //catch 404 - page not found
 app.use(function (req, res) {
-  res.send("404 PAGE NOT FOUND")
+  // res.send("404 PAGE NOT FOUND")
+  res.render('status/404.ejs')
 });
 
 app.listen(8080, () => {
