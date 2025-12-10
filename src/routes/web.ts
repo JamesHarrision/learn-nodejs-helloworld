@@ -6,7 +6,8 @@ import multer from 'multer';
 import fileUploadMiddleware from 'src/middleware/multer';
 import { getProductPage } from 'controllers/client/product.controller';
 import { getAdminCreateProductPage, getAdminViewProduct, postAdminCreateProduct, postDeletProduct, postUpdateAdminProduct } from 'controllers/admin/product.controller';
-import { getLoginPage, getRegisterPage, postRegisterUser } from 'controllers/client/auth.controller';
+import { getLoginPage, getRegisterPage, getSucessRedirectPage, postRegisterUser } from 'controllers/client/auth.controller';
+import { isAdmin, isLogin } from 'src/middleware/auth';
 
 const upload = multer({ dest: 'uploads/' })
 
@@ -17,7 +18,7 @@ const webRoutes = (app: Express) => {
   router.get("/product/:id", getProductPage);
 
   //admin routes:
-  router.get("/admin", getDashboardPage);
+  router.get("/admin", isAdmin ,getDashboardPage);
   router.get("/admin/user", getAdminUserPage);
   router.get("/admin/create-user", getCreateUserPage);
   router.post('/admin/handle-create-user', fileUploadMiddleware('avatar'), postCreateUser);
@@ -34,12 +35,13 @@ const webRoutes = (app: Express) => {
   router.post("/admin/delete-product/:id", postDeletProduct);
 
   //Auth
-  router.get("/login", getLoginPage);
+  router.get("/login", isLogin, getLoginPage);
+  router.get("/success-redirect", getSucessRedirectPage);
   router.post("/login", passport.authenticate('local', {
-    successRedirect: '/',
+    successRedirect: '/success-redirect',
     failureRedirect: '/login',
     failureMessage: true,
-  }))
+  }));
   router.get("/register", getRegisterPage);
   router.post("/register", postRegisterUser);
 
