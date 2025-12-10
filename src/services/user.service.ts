@@ -7,7 +7,7 @@ import { hash } from "crypto";
 const saltRounds = 10;
 
 const hashPassword = async (plainText: string) => {
-  return await bcrypt.hash('123456', saltRounds);
+  return await bcrypt.hash(plainText, saltRounds);
 }
 
 const handleCreateUser = async (

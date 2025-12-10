@@ -38,7 +38,7 @@ const postRegisterUser = async (req: Request, res: Response) => {
   }
 
   //success
-  await registerNewUser(fullName, ""+email, ""+password);
+  await registerNewUser(fullName, email, password);
  return res.redirect("/login");
 }
 
