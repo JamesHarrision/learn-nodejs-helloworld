@@ -83,9 +83,9 @@ model Cart {
 model CartDetail {
   id        Int     @id @default(autoincrement())
   cart      Cart    @relation(fields: [cartId], references: [id])
-  cartId    Int     @unique
+  cartId    Int     
   product   Product @relation(fields: [productId], references: [id])
-  productId Int     @unique
+  productId Int     
   quantity  Int
   price     Int
   @@map("cart_detail")
