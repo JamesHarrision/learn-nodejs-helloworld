@@ -1,5 +1,5 @@
 import { Response, Request } from "express";
-import { addProductToCart, getProductById } from "services/client/item.service";
+import { addProductToCart, getCartDetail, getProductById } from "services/client/item.service";
 
 const getProductPage = async (req: Request, res: Response) => {
   const {id} = req.params;
@@ -26,7 +26,15 @@ const getCartPage = async (req: Request, res: Response) => {
   const user = req.user;
   if(!user) res.redirect('/login');
   else{
-    res.render('client/product/cart');
+    const cartdetails = await getCartDetail(user); 
+    
+    let totalPrice = 0;
+    cartdetails.forEach((item) => totalPrice += item.product.price * item.quantity);
+    // console.log(cartdetails);
+    res.render('client/product/cart', {
+      cartdetails,
+      totalPrice
+    });
   }
 }
 
