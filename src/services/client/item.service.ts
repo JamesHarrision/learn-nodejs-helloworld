@@ -12,7 +12,7 @@ const getProductById = async (id: Number) => {
       id: +id
     }
   });
-} 
+}
 
 const addProductToCart = async (quantity: Number = 1, productId: Number, user: Express.User) => {
   const cart = await prisma.cart.findUnique({
@@ -27,9 +27,42 @@ const addProductToCart = async (quantity: Number = 1, productId: Number, user: E
     }
   })
 
-  if(cart){
+  if (cart) {
     //update
-  }else{
+    //cap nhat sum
+    await prisma.cart.update({
+      where: { id: cart.id },
+      data: {
+        sum: { increment: +quantity }
+      }
+    });
+
+    //cap nhat cartdetail
+    const currentCartDetail = await prisma.cartDetail.findFirst({
+      where: {
+        productId: +productId,
+        cartId: cart.id
+      }
+    });
+
+    await prisma.cartDetail.upsert({
+      where: {
+        id: currentCartDetail?.id ?? 0
+      },
+      update: {
+        quantity: {
+          increment: +quantity
+        }
+      },
+      create: {
+        price: product.price,
+        quantity: +quantity,
+        productId: +productId,
+        cartId: +cart.id
+      },
+    });
+
+  } else {
     //create
     await prisma.cart.create({
       data: {
@@ -49,4 +82,4 @@ const addProductToCart = async (quantity: Number = 1, productId: Number, user: E
   }
 }
 
-export {getProduct, getProductById, addProductToCart}
+export { getProduct, getProductById, addProductToCart }
