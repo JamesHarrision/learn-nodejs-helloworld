@@ -1,5 +1,6 @@
 import { User } from "@prisma/client";
 import { prisma } from "config/client"
+import { getUserSumCart } from "./auth.service";
 
 const getProduct = async () => {
   const products = await prisma.product.findMany();
@@ -87,6 +88,8 @@ const getCartDetail = async (user: Express.User) => {
     where: {userId: user.id}
   });
 
+  if(!cart) return;
+
   const myFullCart = await prisma.cartDetail.findMany({
     where: {cartId: cart.id},
     include: {
@@ -96,4 +99,27 @@ const getCartDetail = async (user: Express.User) => {
   return myFullCart
 }
 
-export { getProduct, getProductById, addProductToCart, getCartDetail}
+
+const deleteCartDetailByID = async (id: number, user: Express.User) => {
+  const cartDetail = await prisma.cartDetail.findUnique({
+    where: {id: +id}
+  });
+
+  await prisma.cartDetail.delete({where: {id: cartDetail.id}});
+  const sumCart = await getUserSumCart(""+user.id);
+  if(sumCart - cartDetail.quantity > 1){
+    //update
+    await prisma.cart.update({
+      where: {userId: user.id},
+      data: {
+        sum:{
+          decrement: cartDetail.quantity
+        }
+      }
+    })
+  }else{
+    await prisma.cart.delete({where: {userId: user.id}});
+  }
+}
+
+export { getProduct, getProductById, addProductToCart, getCartDetail, deleteCartDetailByID}
