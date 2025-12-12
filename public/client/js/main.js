@@ -199,6 +199,10 @@
                 $(totalPriceElement[index]).attr("data-cart-total-price", newTotal);
             });
         }
+
+         const index = input.attr("data-cart-detail-index") 
+        const el = document.getElementById(`cartDetails[${index}]`); 
+        $(el).val(newVal); 
     });
 
     function formatCurrency(value) {
@@ -206,5 +210,7 @@
             style: 'currency', currency: 'VND'
         }).format(value)
     }
+
+   
 
 })(jQuery);

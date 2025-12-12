@@ -1,6 +1,6 @@
 import { prisma } from "config/client";
 import { Response, Request } from "express";
-import { addProductToCart, deleteCartDetailByID, getCartDetail, getProductById } from "services/client/item.service";
+import { addProductToCart, deleteCartDetailByID, getCartDetail, getProductById, updateCartDetailBeforeCheckout } from "services/client/item.service";
 
 const getProductPage = async (req: Request, res: Response) => {
   const {id} = req.params;
@@ -27,14 +27,14 @@ const getCartPage = async (req: Request, res: Response) => {
   const user = req.user;
   if(!user) res.redirect('/login');
   else{
-    const cartdetails = await getCartDetail(user); 
+    const cartDetails = await getCartDetail(user); 
     let totalPrice = 0;
-    if(cartdetails){
-      cartdetails.forEach((item) => totalPrice += item.product.price * item.quantity);
+    if(cartDetails){
+      cartDetails.forEach((item) => totalPrice += item.product.price * item.quantity);
     }
-    console.log(cartdetails);
+    console.log(cartDetails);
     res.render('client/product/cart', {
-      cartdetails,
+      cartDetails,
       totalPrice
     });
   }
@@ -54,18 +54,31 @@ const getCheckoutPage = async (req: Request, res: Response) => {
   const user = req.user;
   if(!user) res.redirect('/login');
   else{
-    const cartdetails = await getCartDetail(user); 
+    const cartDetails = await getCartDetail(user); 
     let totalPrice = 0;
-    if(cartdetails){
-      cartdetails.forEach((item) => totalPrice += item.product.price * item.quantity);
+    if(cartDetails){
+      cartDetails.forEach((item) => totalPrice += item.product.price * item.quantity);
     }
-    console.log(cartdetails);
+    console.log(cartDetails);
     res.render('client/product/checkout', {
-      cartdetails,
+      cartDetails,
       totalPrice
     });
   }
 }
 
+const postHandleCartToCheckout = async (req: Request, res: Response) => {
+  const user = req.user;
+  if(!user) res.redirect("/login");
 
-export {getProductPage, postAddProductToCart, getCartPage, handleDeleteCartDetail, getCheckoutPage}
+  const currentCartDetail: {id: string, quantity: string}[] 
+    = req.body?.cartDetails ?? [];
+  
+  await updateCartDetailBeforeCheckout(currentCartDetail);
+
+  return res.redirect("/checkout")
+}
+
+
+export {getProductPage, postAddProductToCart, getCartPage, 
+  handleDeleteCartDetail, getCheckoutPage, postHandleCartToCheckout}
