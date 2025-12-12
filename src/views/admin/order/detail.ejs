@@ -7,17 +7,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="Hỏi Dân IT - Dự án laptopshop" />
   <meta name="author" content="Hỏi Dân IT" />
-  <title>Manager Orders - Hỏi Dân IT</title>
+  <title>Order Detail - Hỏi Dân IT</title>
   <link href="/admin/css/styles.css" rel="stylesheet" />
   <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script>
+    $(document).ready(() => {
+      const avatarFile = $("#avatarFile");
+      avatarFile.change(function (e) {
+        const imgURL = URL.createObjectURL(e.target.files[0]);
+        $("#avatarPreview").attr("src", imgURL);
+        $("#avatarPreview").css({ "display": "block" });
+      });
+    }); 
+  </script>
 </head>
 
 <body class="sb-nav-fixed">
-  <!-- Header -->
   <%- include('../layout/header') %>
 
     <div id="layoutSidenav">
-      <!-- Side Nav -->
       <%- include('../layout/sidenav') %>
 
         <div id="layoutSidenav_content">
@@ -26,65 +35,53 @@
               <h1 class="mt-4">Manage Orders</h1>
               <ol class="breadcrumb mb-4">
                 <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                <li class="breadcrumb-item active">Orders</li>
+                <li class="breadcrumb-item active"><a href="/admin/Order">Orders</a></li>
+                <li class="breadcrumb-item" style="color: gray;">Order detail</li>
               </ol>
 
               <div class="card mb-4">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                  <div>
-                    <i class="fas fa-table me-1"></i>
-                    List Orders
-                  </div>
-                </div>
-
                 <div class="card-body">
                   <div class="table-responsive">
                     <table class="table table-hover table-bordered">
                       <thead class="table-dark">
                         <tr>
-                          <th>Id</th>
-                          <th>User</th>
-                          <th>Total Price</th>
-                          <th>Status</th>
-                          <th>Payment Method</th>
-                          <th>Payment Status</th>
-                          <th>Action</th>
+                          <th>Sản phẩm</th>
+                          <th>Tên</th>
+                          <th>Giá cả</th>
+                          <th>Số lượng</th>
+                          <th>Thành tiền</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <% if (orders && orders.length> 0) { %>
-                          <% orders.forEach(function(order) { %>
+                        <% if (orderDetails && orderDetails.length> 0) { %>
+                          <% orderDetails.forEach(function(orderDetail) { %>
                             <tr>
                               <td>
-                                <%= order.id %>
-                              </td>
-                              <td>
-                                <%= order.user.fullName %>
-                              </td>
-                              <td>
-                                <%= order.totalPrice %>
-                              </td>
-                              <td>
-                                <%= order.status %>
-                              </td>
-                              <td>
-                                <%= order.paymentMethod %>
-                              </td>
-                              <td>
-                                <%= order.paymentStatus %>
-                              </td>
-                              <td>
-                                <div class="d-flex gap-2">
-                                  <a href="/admin/view-order/<%= order.id %>" class="btn btn-warning btn-sm">
-                                    <i class="fas fa-eye"></i> View
-                                  </a>
+                                <div
+                                  class="rounded-circle border bg-light d-flex justify-content-center align-items-center overflow-hidden"
+                                  style="width: 100px; height: 100px;">
+
+                                  <img src="/images/product/<%= orderDetail.product?.image %>" class="img-fluid"
+                                    style="max-height: 100%;" alt="">
                                 </div>
+                              </td>
+                              <td>
+                                <%= orderDetail.product.name %>
+                              </td>
+                              <td>
+                                <%= orderDetail.price %>
+                              </td>
+                              <td>
+                                <%= orderDetail.quantity %>
+                              </td>
+                              <td>
+                                <%= orderDetail.price * orderDetail.quantity %>
                               </td>
                             </tr>
                             <% }); %>
                               <% } else { %>
                                 <tr>
-                                  <td colspan="6" class="text-center">No products found</td>
+                                  <td colspan="5" class="text-center">No Orders found</td>
                                 </tr>
                                 <% } %>
                       </tbody>
@@ -92,12 +89,18 @@
                   </div>
                 </div>
               </div>
+
+              <div class="d-flex justify-content-end">
+                <a href="/admin/Order" class="btn btn-primary">Go back</a>
+              </div>
+
             </div>
           </main>
-          <!-- Footer -->
+
           <%- include('../layout/footer') %>
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
       crossorigin="anonymous"></script>
     <script src="/admin/js/scripts.js"></script>

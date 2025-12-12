@@ -8,6 +8,7 @@ import { getCartPage, getProductPage, postAddProductToCart, handleDeleteCartDeta
 import { getAdminCreateProductPage, getAdminViewProduct, postAdminCreateProduct, postDeletProduct, postUpdateAdminProduct } from 'controllers/admin/product.controller';
 import { getLoginPage, getRegisterPage, getSucessRedirectPage, postLogout, postRegisterUser } from 'controllers/client/auth.controller';
 import { isAdmin, isLogin } from 'src/middleware/auth';
+import { getAdminOrderDetail } from 'controllers/admin/order.controller';
 
 const upload = multer({ dest: 'uploads/' })
 
@@ -55,6 +56,7 @@ const webRoutes = (app: Express) => {
   router.post("/register", postRegisterUser);
 
   router.get("/admin/order", getAdminOrderPage);
+  router.get("/admin/view-order/:id", getAdminOrderDetail);
 
 
   app.use('/', isAdmin, router);
