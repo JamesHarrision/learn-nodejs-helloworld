@@ -130,7 +130,8 @@
                       <tr>
                         <td colspan="6" class="text-center py-5">
                           <h4 class="text-muted">Giỏ hàng đang rỗng</h4>
-                          <a style="color: white;" href="/" class="btn btn-primary rounded-pill px-4 py-2 mt-3">Tiếp tục mua sắm</a>
+                          <a style="color: white;" href="/" class="btn btn-primary rounded-pill px-4 py-2 mt-3">Tiếp tục
+                            mua sắm</a>
                         </td>
                       </tr>
                       <% } %>
@@ -165,8 +166,10 @@
                     <%= new Intl.NumberFormat('vi-VN', { style: 'currency' , currency: 'VND' }).format(totalPrice) %>
                   </p>
                 </div>
-                <button class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4"
-                  type="button">Xác nhận thanh toán</button>
+                <form action="/checkout" method="get">
+                  <button type="submit" class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4"
+                    type="button">Xác nhận thanh toán</button>
+                </form>
               </div>
             </div>
           </div>

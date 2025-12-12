@@ -50,6 +50,22 @@ const handleDeleteCartDetail = async (req: Request, res: Response) => {
   res.redirect('/cart');
 }
 
+const getCheckoutPage = async (req: Request, res: Response) => {
+  const user = req.user;
+  if(!user) res.redirect('/login');
+  else{
+    const cartdetails = await getCartDetail(user); 
+    let totalPrice = 0;
+    if(cartdetails){
+      cartdetails.forEach((item) => totalPrice += item.product.price * item.quantity);
+    }
+    console.log(cartdetails);
+    res.render('client/product/checkout', {
+      cartdetails,
+      totalPrice
+    });
+  }
+}
 
 
-export {getProductPage, postAddProductToCart, getCartPage, handleDeleteCartDetail}
+export {getProductPage, postAddProductToCart, getCartPage, handleDeleteCartDetail, getCheckoutPage}
