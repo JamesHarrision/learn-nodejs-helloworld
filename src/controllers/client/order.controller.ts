@@ -8,7 +8,6 @@ const getOrderHistoryPage = async (req: Request, res: Response) => {
   }
 
   const data = await getOrderAndOrderDetail(Number(user.id));
-  console.log(data[0]);
   res.render('client/product/orderHistory', {
     orders: data
   });

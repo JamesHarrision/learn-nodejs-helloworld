@@ -101,11 +101,8 @@
                           </button>
                         </div>
                         <input type="text" class="form-control form-control-sm text-center border-0"
-                          value="<%=cartDetail.quantity %>" 
-                          data-cart-detail-id="<%=cartDetail.id %>"
-                          data-cart-detail-price="<%=cartDetail.price %>" 
-                          data-cart-detail-index="<%=index%>"
-                          />
+                          value="<%=cartDetail.quantity %>" data-cart-detail-id="<%=cartDetail.id %>"
+                          data-cart-detail-price="<%=cartDetail.price %>" data-cart-detail-index="<%=index%>" />
                         <div class="input-group-btn">
                           <button class="btn btn-sm btn-plus rounded-circle bg-light border">
                             <i class="fa fa-plus"></i>
@@ -172,6 +169,11 @@
                 <form action="/handle-cart-to-checkout" method="post">
                   <div style="display: none">
                     <% cartDetails.forEach( function (cartDetail, index) { %>
+                      <div class="form-group">
+                          <label>CartId:</label>
+                          <input class="form-control" type="text" value="<%=cartDetail.cartId %>"
+                            name="cartDetails[<%= index %>][cartId]" />
+                        </div>
                       <div class="mb-3">
                         <div class="form-group">
                           <label>Id:</label>
