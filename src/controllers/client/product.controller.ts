@@ -25,22 +25,27 @@ const postAddProductToCart = async (req: Request, res: Response) => {
 
 const getCartPage = async (req: Request, res: Response) => {
   const user = req.user;
-  if (!user) res.redirect('/login');
+  if (!user) return res.redirect('/login');
   else {
     const cartDetails = await getCartDetail(user);
     let totalPrice = 0;
     if (cartDetails) {
       cartDetails.forEach((item) => totalPrice += item.product.price * item.quantity);
+      // console.log(cartDetails);
+      const cartId = (cartDetails.length > 0) ? cartDetails[0].cartId : 0;
+      return res.render('client/product/cart', {
+        cartDetails,
+        totalPrice,
+        cartId: cartId,
+      });
+    }
+    else {
+      return res.render('client/product/cart', {
+        cartDetails,
+        totalPrice: 0,
+      });
     }
 
-    const cartId = (cartDetails.length > 0) ? cartDetails[0].cartId : 0;
-    console.log(cartDetails);
-
-    res.render('client/product/cart', {
-      cartDetails,
-      totalPrice,
-      cartId: cartId,
-    });
   }
 }
 
@@ -48,22 +53,22 @@ const handleDeleteCartDetail = async (req: Request, res: Response) => {
   const { id } = req.params;
   const user = req.user;
 
-  if (!user) res.redirect("/login");
+  if (!user) return res.redirect("/login");
 
   await deleteCartDetailByID(+id, user);
-  res.redirect('/cart');
+  return res.redirect('/cart');
 }
 
 const getCheckoutPage = async (req: Request, res: Response) => {
   const user = req.user;
-  if (!user) res.redirect('/login');
+  if (!user) return res.redirect('/login');
   else {
     const cartDetails = await getCartDetail(user);
     let totalPrice = 0;
     if (cartDetails) {
       cartDetails.forEach((item) => totalPrice += item.product.price * item.quantity);
     }
-    res.render('client/product/checkout', {
+    return res.render('client/product/checkout', {
       cartDetails,
       totalPrice
     });
@@ -72,7 +77,7 @@ const getCheckoutPage = async (req: Request, res: Response) => {
 
 const postHandleCartToCheckout = async (req: Request, res: Response) => {
   const user = req.user;
-  if (!user) res.redirect("/login");
+  if (!user) return res.redirect("/login");
 
   const currentCartDetail: { id: string, quantity: string, cartId: string }[]
     = req.body?.cartDetails ?? [];
@@ -83,26 +88,30 @@ const postHandleCartToCheckout = async (req: Request, res: Response) => {
 }
 
 const postPlaceOrder = async (req: Request, res: Response) => {
-  const user = req.user;
-  if (!user) res.redirect("/login");
+  try {
+    const user = req.user;
+    if (!user) return res.redirect("/login");
 
-  const { receiverName, receiverAddress, receiverPhone } = req.body;
-  const { totalPrice } = req.body;
-  await handlePlaceOrder(user.id, receiverName, receiverAddress, receiverPhone, totalPrice);
+    const { receiverName, receiverAddress, receiverPhone } = req.body;
+    const { totalPrice } = req.body;
 
-  return res.redirect("/thanks")
+
+    await handlePlaceOrder(user.id, receiverName, receiverAddress, receiverPhone, totalPrice);
+
+    return res.redirect("/thanks");
+  } catch (error: any) {
+    return res.redirect("/checkout");
+  }
 }
 
 const getThanksPage = async (req: Request, res: Response) => {
   const user = req.user;
-  if (!user) res.redirect("/login");
+  if (!user) return res.redirect("/login");
 
 
 
   return res.render("client/product/thanks")
 }
-
-
 
 export {
   getProductPage, postAddProductToCart, getCartPage,
