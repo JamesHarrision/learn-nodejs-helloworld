@@ -1,11 +1,19 @@
 import { prisma } from "config/client";
 import { Response, Request } from "express";
-import { addProductToCart, deleteCartDetailByID, getCartDetail, getProduct, getProductById, handlePlaceOrder, updateCartDetailBeforeCheckout } from "services/client/item.service";
+import { addProductToCart, countTotalClientProductPages, deleteCartDetailByID, getCartDetail, getProduct, getProductById, handlePlaceOrder, updateCartDetailBeforeCheckout } from "services/client/item.service";
 
 const getShopPage = async (req: Request, res: Response) => {
-  const products = await getProduct();
+
+  const { page } = req.query;
+  let currentPage = Number(page) ? Number(page) : 1;
+  if (currentPage <= 0) currentPage = 1;
+
+  const products = await getProduct(+currentPage, 9);
+  const totalPages = await countTotalClientProductPages(9);
   return res.render('client/product/shop', {
-    products
+    products,
+    page: +currentPage,
+    totalPages: +totalPages
   });
 }
 
@@ -28,7 +36,7 @@ const postAddProductToCart = async (req: Request, res: Response) => {
     await res.redirect('/login');
   }
 
-  if( shopping ) res.redirect('/products');
+  if (shopping) res.redirect('/products')
   return res.redirect('/');
 }
 

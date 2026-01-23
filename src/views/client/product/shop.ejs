@@ -354,26 +354,30 @@
                 </div>
                 <% }); %>
 
-                  <!-- Pagination -->
-                  <div class="col-12">
-                    <div class="pagination d-flex justify-content-center mt-4">
-                      <a href="#" class="rounded mx-1"
-                        style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 2px solid #e0e0e0; color: #666;">&laquo;</a>
-                      <a href="#" class="active rounded mx-1"
-                        style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: #81c408; color: white; border: none;">1</a>
-                      <a href="#" class="rounded mx-1"
-                        style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 2px solid #e0e0e0; color: #666;">2</a>
-                      <a href="#" class="rounded mx-1"
-                        style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 2px solid #e0e0e0; color: #666;">3</a>
-                      <a href="#" class="rounded mx-1"
-                        style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 2px solid #e0e0e0; color: #666;">4</a>
-                      <a href="#" class="rounded mx-1"
-                        style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 2px solid #e0e0e0; color: #666;">&raquo;</a>
-                    </div>
-                  </div>
+
             </div>
           </div>
         </div>
+      </div>
+      <!-- Pagination -->
+      <div class="pagination d-flex justify-content-center mt-5">
+        <li class="<%= page === 1 ? 'disabled page-item' : 'page-item' %> ">
+          <a class="page-link" href="/?page=<%= page - 1  %>" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <% for(var i=1; i <=totalPages; i++) {%>
+          <li class="page-item">
+            <a class="<%= page === i ? 'active page-link' : 'page-link' %>" href="/products?page=<%= i  %>">
+              <%= i %>
+            </a>
+          </li>
+          <% } %>
+            <li class="<%= page === totalPages ? 'disabled page-item' : 'page-item' %> ">
+              <a class="page-link" href="/products?page=<%= page + 1  %>" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
       </div>
     </div>
     <!-- Shop End -->
