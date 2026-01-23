@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Cửa hàng - Laptopshop</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="" name="keywords">
+  <meta content="" name="description">
+
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Icon Font Stylesheet -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Libraries Stylesheet -->
+  <link href="/client/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+  <link href="/client/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+  <!-- Customized Bootstrap Stylesheet -->
+  <link href="/client/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Template Stylesheet -->
+  <link href="/client/css/style.css" rel="stylesheet">
+
+  <style>
+    .filter-section {
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      margin-bottom: 20px;
+    }
+
+    .filter-section h5 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+
+    .checkbox-item {
+      margin-bottom: 12px;
+    }
+
+    .checkbox-item input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
+      cursor: pointer;
+      accent-color: #81c408;
+    }
+
+    .checkbox-item label {
+      font-size: 14px;
+      color: #666;
+      cursor: pointer;
+      margin-bottom: 0;
+      vertical-align: middle;
+    }
+
+    .checkbox-item:hover label {
+      color: #81c408;
+    }
+
+    .radio-item {
+      margin-bottom: 12px;
+    }
+
+    .radio-item input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      margin-right: 10px;
+      cursor: pointer;
+      accent-color: #81c408;
+    }
+
+    .radio-item label {
+      font-size: 14px;
+      color: #666;
+      cursor: pointer;
+      margin-bottom: 0;
+      vertical-align: middle;
+    }
+
+    .radio-item:hover label {
+      color: #81c408;
+    }
+
+    .filter-button {
+      width: 100%;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #81c408 0%, #6fa807 100%);
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .filter-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(129, 196, 8, 0.3);
+    }
+
+    .product-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 100%;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .product-card .fruite-img {
+      overflow: hidden;
+      border-radius: 12px 12px 0 0;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f8f9fa;
+    }
+
+    .product-card .fruite-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .product-card:hover .fruite-img img {
+      transform: scale(1.05);
+    }
+
+    .product-card .add-btn {
+      color: white;
+    }
+
+    .search-box {
+      border-radius: 25px;
+      border: 2px solid #e0e0e0;
+      transition: border-color 0.3s ease;
+    }
+
+    .search-box:focus {
+      border-color: #81c408;
+      box-shadow: 0 0 0 3px rgba(129, 196, 8, 0.1);
+    }
+
+    .sort-select {
+      border-radius: 25px;
+      border: 2px solid #e0e0e0;
+      padding: 10px 15px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Spinner Start -->
+  <div id="spinner"
+    class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+    <div class="spinner-grow text-primary" role="status"></div>
+  </div>
+  <!-- Spinner End -->
+
+  <!-- Navbar start -->
+  <%- include('../layout/header'); -%>
+    <!-- Navbar End -->
+
+    <!-- Shop Start -->
+    <div class="container-fluid py-5" style="background: #f8f9fa;">
+      <div class="container py-5">
+        <h1 class="mb-4 fw-bold">Cửa hàng Laptop</h1>
+
+        <div class="row g-4 mb-4">
+          <div class="col-xl-6">
+            <div class="input-group">
+              <input type="search" class="form-control search-box p-3" placeholder="Tìm kiếm sản phẩm..."
+                aria-describedby="search-icon">
+              <button class="btn btn-primary px-4" id="search-icon" style="border-radius: 0 25px 25px 0;">
+                <i class="fa fa-search"></i>
+              </button>
+            </div>
+          </div>
+          <div class="col-xl-3"></div>
+          <div class="col-xl-3">
+            <select class="form-select sort-select">
+              <option value="default">Sắp xếp mặc định</option>
+              <option value="popularity">Phổ biến nhất</option>
+              <option value="price-asc">Giá: Thấp đến cao</option>
+              <option value="price-desc">Giá: Cao đến thấp</option>
+              <option value="newest">Mới nhất</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <!-- Sidebar Filters -->
+          <div class="col-lg-3">
+
+            <!-- Hãng sản xuất -->
+            <div class="filter-section">
+              <h5>Hãng sản xuất</h5>
+              <div class="checkbox-item">
+                <input type="checkbox" id="apple" name="factory" value="APPLE">
+                <label for="apple">Apple</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="asus" name="factory" value="ASUS">
+                <label for="asus">Asus</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="lenovo" name="factory" value="LENOVO">
+                <label for="lenovo">Lenovo</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="dell" name="factory" value="DELL">
+                <label for="dell">Dell</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="lg" name="factory" value="LG">
+                <label for="lg">LG</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="acer" name="factory" value="ACER">
+                <label for="acer">Acer</label>
+              </div>
+            </div>
+
+            <!-- Mục đích sử dụng -->
+            <div class="filter-section">
+              <h5>Mục đích sử dụng</h5>
+              <div class="checkbox-item">
+                <input type="checkbox" id="gaming" name="target" value="GAMING">
+                <label for="gaming">Gaming</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="sinhvien" name="target" value="SINHVIEN-VANPHONG">
+                <label for="sinhvien">Sinh viên - văn phòng</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="thietke" name="target" value="THIET-KE-DO-HOA">
+                <label for="thietke">Thiết kế đồ họa</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="mongne" name="target" value="MONG-NHE">
+                <label for="mongne">Mỏng nhẹ</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="doanhnhan" name="target" value="DOANH-NHAN">
+                <label for="doanhnhan">Doanh nhân</label>
+              </div>
+            </div>
+
+            <!-- Mức giá -->
+            <div class="filter-section">
+              <h5>Mức giá</h5>
+              <div class="checkbox-item">
+                <input type="checkbox" id="price1" name="price" value="under-10">
+                <label for="price1">Dưới 10 triệu</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="price2" name="price" value="10-15">
+                <label for="price2">Từ 10 - 15 triệu</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="price3" name="price" value="15-20">
+                <label for="price3">Từ 15 - 20 triệu</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="price4" name="price" value="over-20">
+                <label for="price4">Trên 20 triệu</label>
+              </div>
+            </div>
+
+            <!-- Sắp xếp -->
+            <div class="filter-section">
+              <h5>Sắp xếp</h5>
+              <div class="radio-item">
+                <input type="radio" id="sort1" name="sort" value="asc">
+                <label for="sort1">Giá tăng dần</label>
+              </div>
+              <div class="radio-item">
+                <input type="radio" id="sort2" name="sort" value="desc">
+                <label for="sort2">Giá giảm dần</label>
+              </div>
+              <div class="radio-item">
+                <input type="radio" id="sort3" name="sort" value="none" checked>
+                <label for="sort3">Không sắp xếp</label>
+              </div>
+            </div>
+
+            <button class="filter-button">
+              <i class="fa fa-filter me-2"></i>Lọc sản phẩm
+            </button>
+          </div>
+
+          <!-- Products Grid -->
+          <div class="col-lg-9">
+            <div class="row g-4">
+              <% products.forEach(function(product) { %>
+                <div class="col-md-6 col-lg-4">
+                  <div class="rounded position-relative fruite-item product-card">
+                    <div class="fruite-img">
+                      <img src="/images/product/<%= product.image %>" class="img-fluid" alt="<%= product.name %>">
+                    </div>
+                    <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
+                      style="top: 10px; left: 10px; font-size: 12px; font-weight: 600;">
+                      <%= product.factory %>
+                    </div>
+                    <div class="p-4 border border-secondary border-top-0 rounded-bottom" style="background: white;">
+                      <h5 class="mb-2"
+                        style="height: 48px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+                        <a href="/product/<%= product.id %>"
+                          style="color: #333; text-decoration: none; font-size: 16px; font-weight: 600;">
+                          <%= product.name %>
+                        </a>
+                      </h5>
+                      <p class="text-muted mb-3"
+                        style="font-size: 13px; height: 40px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+                        <%= product.shortDesc %>
+                      </p>
+                      <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="text-primary fw-bold mb-0" style="font-size: 18px;">
+                          <%= new Intl.NumberFormat('vi-VN', { style: 'currency' , currency: 'VND'
+                            }).format(product.price) %>
+                        </h5>
+                        <form method="post" action="/add-product-to-cart/<%= product.id %>">
+                          <input style="display: none;" name="shopping" value="1">
+                          <button type="submit" class="add-btn btn btn-sm btn-primary rounded-pill px-3"
+                            style="font-size: 13px;">
+                            <i class="fa fa-shopping-cart me-1"></i>
+                            Thêm
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <% }); %>
+
+                  <!-- Pagination -->
+                  <div class="col-12">
+                    <div class="pagination d-flex justify-content-center mt-4">
+                      <a href="#" class="rounded mx-1"
+                        style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 2px solid #e0e0e0; color: #666;">&laquo;</a>
+                      <a href="#" class="active rounded mx-1"
+                        style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: #81c408; color: white; border: none;">1</a>
+                      <a href="#" class="rounded mx-1"
+                        style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 2px solid #e0e0e0; color: #666;">2</a>
+                      <a href="#" class="rounded mx-1"
+                        style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 2px solid #e0e0e0; color: #666;">3</a>
+                      <a href="#" class="rounded mx-1"
+                        style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 2px solid #e0e0e0; color: #666;">4</a>
+                      <a href="#" class="rounded mx-1"
+                        style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 2px solid #e0e0e0; color: #666;">&raquo;</a>
+                    </div>
+                  </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Shop End -->
+
+    <!-- Footer Start -->
+    <%- include('../layout/footer'); -%>
+      <!-- Footer End -->
+
+      <!-- Back to Top -->
+      <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i
+          class="fa fa-arrow-up"></i></a>
+
+      <!-- JavaScript Libraries -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+      <script src="/client/lib/easing/easing.min.js"></script>
+      <script src="/client/lib/waypoints/waypoints.min.js"></script>
+      <script src="/client/lib/lightbox/js/lightbox.min.js"></script>
+      <script src="/client/lib/owlcarousel/owl.carousel.min.js"></script>
+
+      <!-- Template Javascript -->
+      <script src="/client/js/main.js"></script>
+</body>
+
+</html>

@@ -100,16 +100,19 @@ const getCartDetail = async (user: Express.User) => {
   return myFullCart
 }
 
-
 const deleteCartDetailByID = async (id: number, user: Express.User) => {
   const cartDetail = await prisma.cartDetail.findUnique({
     where: { id: +id }
   });
 
-  await prisma.cartDetail.delete({ where: { id: cartDetail.id } });
+  if (!cartDetail) throw new Error('Cart detail not found');
+
   const sumCart = await getUserSumCart("" + user.id);
-  if (sumCart - cartDetail.quantity > 1) {
-    //update
+
+  await prisma.cartDetail.delete({ where: { id: cartDetail.id } });
+
+  if (sumCart - cartDetail.quantity > 0) {
+    // còn sản phẩm → update sum
     await prisma.cart.update({
       where: { userId: user.id },
       data: {
@@ -117,9 +120,12 @@ const deleteCartDetailByID = async (id: number, user: Express.User) => {
           decrement: cartDetail.quantity
         }
       }
-    })
+    });
   } else {
-    await prisma.cart.delete({ where: { userId: user.id } });
+    // không còn sản phẩm → xóa cart
+    await prisma.cart.delete({
+      where: { userId: user.id }
+    });
   }
 }
 

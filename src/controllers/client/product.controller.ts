@@ -1,6 +1,13 @@
 import { prisma } from "config/client";
 import { Response, Request } from "express";
-import { addProductToCart, deleteCartDetailByID, getCartDetail, getProductById, handlePlaceOrder, updateCartDetailBeforeCheckout } from "services/client/item.service";
+import { addProductToCart, deleteCartDetailByID, getCartDetail, getProduct, getProductById, handlePlaceOrder, updateCartDetailBeforeCheckout } from "services/client/item.service";
+
+const getShopPage = async (req: Request, res: Response) => {
+  const products = await getProduct();
+  return res.render('client/product/shop', {
+    products
+  });
+}
 
 const getProductPage = async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -12,6 +19,7 @@ const getProductPage = async (req: Request, res: Response) => {
 
 const postAddProductToCart = async (req: Request, res: Response) => {
   const { id } = req.params;
+  const { shopping } = req.body;
   const user = req.user;
 
   if (user) {
@@ -20,6 +28,7 @@ const postAddProductToCart = async (req: Request, res: Response) => {
     await res.redirect('/login');
   }
 
+  if( shopping ) res.redirect('/products');
   return res.redirect('/');
 }
 
@@ -43,6 +52,7 @@ const getCartPage = async (req: Request, res: Response) => {
       return res.render('client/product/cart', {
         cartDetails,
         totalPrice: 0,
+        cartId: 0
       });
     }
 
@@ -53,6 +63,7 @@ const handleDeleteCartDetail = async (req: Request, res: Response) => {
   const { id } = req.params;
   const user = req.user;
 
+  if (!id) res.redirect('/cart');
   if (!user) return res.redirect("/login");
 
   await deleteCartDetailByID(+id, user);
@@ -107,13 +118,10 @@ const postPlaceOrder = async (req: Request, res: Response) => {
 const getThanksPage = async (req: Request, res: Response) => {
   const user = req.user;
   if (!user) return res.redirect("/login");
-
-
-
   return res.render("client/product/thanks")
 }
 
 export {
   getProductPage, postAddProductToCart, getCartPage,
-  handleDeleteCartDetail, getCheckoutPage, postHandleCartToCheckout, postPlaceOrder, getThanksPage
+  handleDeleteCartDetail, getCheckoutPage, postHandleCartToCheckout, postPlaceOrder, getThanksPage, getShopPage
 }
