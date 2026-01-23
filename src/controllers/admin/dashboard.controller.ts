@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { getAllOrders } from 'services/admin/order.service';
-import { getProductList } from 'services/admin/product.service';
+import { countTotalProductPage, getProductList } from 'services/admin/product.service';
 import { countTotalUserPage, getAllUsers } from 'services/user.service';
 
 const getDashboardPage = async (req: Request, res: Response) => {
@@ -11,7 +11,7 @@ const getAdminUserPage = async (req: Request, res: Response) => {
 
   const { page } = req.query;
   let currentPage = Number(page) ? Number(page) : 1;
-  if(currentPage <= 0) currentPage = 1;
+  if (currentPage <= 0) currentPage = 1;
 
   const users = await getAllUsers(currentPage);
   const totalPages = await countTotalUserPage();
@@ -24,8 +24,18 @@ const getAdminUserPage = async (req: Request, res: Response) => {
 }
 
 const getAdminProductPage = async (req: Request, res: Response) => {
-  const products = await getProductList();
-  return res.render('admin/product/show.ejs', { products });
+  const { page } = req.query;
+  let currentPage = Number(page) ? Number(page) : 1;
+  if (currentPage <= 0) currentPage = 1;
+
+  const products = await getProductList(currentPage);
+  const totalPages = await countTotalProductPage();
+
+  return res.render('admin/product/show.ejs', {
+    products,
+    page: +page,
+    totalPages: +totalPages
+  });
 }
 
 const getAdminOrderPage = async (req: Request, res: Response) => {
