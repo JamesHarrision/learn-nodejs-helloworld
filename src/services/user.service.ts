@@ -1,9 +1,7 @@
 import { prisma } from "config/client";
-import { ACCOUNT_TYPE } from "config/constant";
-import getConnection from "config/database";
+import { ACCOUNT_TYPE, TOTAL_ITEMS_PER_PAGE } from "config/constant";
 
-import bcrypt from 'bcrypt' 
-import { hash } from "crypto";
+import bcrypt from 'bcrypt'
 const saltRounds = 10;
 
 const hashPassword = async (plainText: string) => {
@@ -11,31 +9,31 @@ const hashPassword = async (plainText: string) => {
 }
 
 const handleCreateUser = async (
-  fullName: string, 
-  email: string, 
+  fullName: string,
+  email: string,
   address: string,
   phone: string,
   avatar: string,
   role: string
-    ) => {
-    const defaultPassword = await hashPassword("123456");
-    const user = await prisma.user.create({
-      data: {
-        fullName: fullName,
-        username: email,
-        address: address,
-        password: defaultPassword,
-        accountType: ACCOUNT_TYPE.SYSTEM,
-        avatar: avatar,
-        phone: phone,
-        roleId: +role,
-      }
-    });
-    return user;
+) => {
+  const defaultPassword = await hashPassword("123456");
+  const user = await prisma.user.create({
+    data: {
+      fullName: fullName,
+      username: email,
+      address: address,
+      password: defaultPassword,
+      accountType: ACCOUNT_TYPE.SYSTEM,
+      avatar: avatar,
+      phone: phone,
+      roleId: +role,
+    }
+  });
+  return user;
 }
 
 const getAllUsers = async (page: number) => {
-  const pageSize = 2;
+  const pageSize = TOTAL_ITEMS_PER_PAGE;
   const skip = (page - 1) * pageSize;
 
   const users = await prisma.user.findMany({
@@ -43,6 +41,13 @@ const getAllUsers = async (page: number) => {
     take: pageSize,
   });
   return users;
+}
+
+const countTotalUserPage = async () => {
+  const pageSize = TOTAL_ITEMS_PER_PAGE;
+  const totalItems = await prisma.user.count();
+  const totalPages = Math.ceil(totalItems / pageSize);
+  return totalPages;
 }
 
 const getAllRoles = async () => {
@@ -71,23 +76,23 @@ const getUserById = async (id: String) => {
 }
 
 const updateUserById = async (
-   id: string,
-   fullName: string, 
-   phone: string,
-   role: string,
-   address: string,
-   avatar: string 
+  id: string,
+  fullName: string,
+  phone: string,
+  role: string,
+  address: string,
+  avatar: string
 ) => {
   const updatedUser = await prisma.user.update({
     where: {
       id: +id
     },
     data: {
-        fullName: fullName,
-        address: address,
-        phone: phone,
-        roleId: +role,
-        ...(avatar !== undefined && {avatar: avatar})
+      fullName: fullName,
+      address: address,
+      phone: phone,
+      roleId: +role,
+      ...(avatar !== undefined && { avatar: avatar })
     }
   });
   return updatedUser;
@@ -97,5 +102,7 @@ const comparePassword = async (plainText: string, hashPassword: string) => {
   return await bcrypt.compare(plainText, hashPassword);
 }
 
-export { handleCreateUser, getAllUsers, handleDeleteUser, getUserById, updateUserById, getAllRoles, hashPassword, comparePassword
+export {
+  handleCreateUser, getAllUsers, handleDeleteUser, getUserById, updateUserById, getAllRoles, hashPassword, 
+  comparePassword, countTotalUserPage
 }
