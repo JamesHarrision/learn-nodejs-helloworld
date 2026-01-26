@@ -1,19 +1,27 @@
 import { prisma } from "config/client";
 import { Response, Request } from "express";
 import { addProductToCart, countTotalClientProductPages, deleteCartDetailByID, getCartDetail, getProduct, getProductById, handlePlaceOrder, updateCartDetailBeforeCheckout } from "services/client/item.service";
+import { getProductByFilter } from "services/client/product.shop";
 
 const getShopPage = async (req: Request, res: Response) => {
 
-  const { page } = req.query;
+  const { page, factory = "", target = "", price = "", sort = "" } = req.query as {
+    page?: string,
+    factory: string,
+    target: string,
+    price: string,
+    sort: string,
+  };
+
   let currentPage = Number(page) ? Number(page) : 1;
   if (currentPage <= 0) currentPage = 1;
 
-  const products = await getProduct(+currentPage, 9);
-  const totalPages = await countTotalClientProductPages(9);
+  const data = await getProductByFilter(Number(page), 10, factory, target, price, sort);
+
   return res.render('client/product/shop', {
-    products,
+    products: data.products,
     page: +currentPage,
-    totalPages: +totalPages
+    totalPages: +data.totalPages
   });
 }
 
